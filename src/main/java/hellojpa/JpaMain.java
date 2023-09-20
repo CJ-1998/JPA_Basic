@@ -52,6 +52,13 @@ public class JpaMain {
             Member findMember3 = em.find(Member.class, 150L);
             findMember3.setName("zzz");
 
+//          flush 확인
+            Member member3 = new Member(300L, "A");
+            em.persist(member3);
+
+            em.flush();
+            System.out.println("-------------------");
+
             tx.commit();
 
 //            jpa 조회
