@@ -59,6 +59,13 @@ public class JpaMain {
             em.flush();
             System.out.println("-------------------");
 
+            Member findMember4 = em.find(Member.class, 150L);
+            findMember3.setName("AAA");
+
+            em.detach(findMember4);
+//          em.clear();
+            System.out.println("====================");
+
             tx.commit();
 
 //            jpa 조회
