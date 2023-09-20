@@ -18,24 +18,31 @@ public class JpaMain {
         try {
 
 //            비영속
-//            Member member = new Member();
-//            member.setId(1L);
-//            member.setName("helloA");
+            Member member = new Member();
+            member.setId(100L);
+            member.setName("helloA");
 
 //            영속
             System.out.println("===BEFORE===");
-//            em.persist(member);
+            em.persist(member);
             System.out.println("===AFTER===");
 
-            Member findMember = em.find(Member.class, 1L);
-            findMember.setName("HelloJPA");
+            Member findMember1 = em.find(Member.class, 100L);
+            System.out.println("findMember.getId() = " + findMember1.getId());
+            System.out.println("findMember.getName() = " + findMember1.getName());
 
-            List<Member> result = em.createQuery("select m from Member as m", Member.class)
-                    .getResultList();
+            Member findMember2 = em.find(Member.class, 100L);
+            System.out.println("result= "+ (findMember1==findMember2));
 
-            for (Member member : result) {
-                System.out.println("member.getName() = " + member.getName());
-            }
+//            Member findMember = em.find(Member.class, 1L);
+//            findMember.setName("HelloJPA");
+//
+//            List<Member> result = em.createQuery("select m from Member as m", Member.class)
+//                    .getResultList();
+//
+//            for (Member member : result) {
+//                System.out.println("member.getName() = " + member.getName());
+//            }
 
 //            em.remove(findMember);
 
