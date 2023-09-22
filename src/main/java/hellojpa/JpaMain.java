@@ -16,7 +16,19 @@ public class JpaMain {
         tx.begin();
 
         try {
+            tx.commit();
+        }
+        catch(Exception e){
+            tx.rollback();
+        }
+        finally {
+            em.close();
+        }
 
+        emf.close();
+    }
+
+    public void JPALecture1To3(EntityManager em, EntityTransaction tx){
 //          비영속 상태
             Member member = new Member();
             member.setId(200L);
@@ -59,6 +71,7 @@ public class JpaMain {
             em.flush();
             System.out.println("-------------------");
 
+//          준영속 상태
             Member findMember4 = em.find(Member.class, 150L);
             findMember3.setName("AAA");
 
@@ -83,14 +96,20 @@ public class JpaMain {
 //            em.remove(findMember);
 
 //            tx.commit();
-        }
-        catch(Exception e){
-            tx.rollback();
-        }
-        finally {
-            em.close();
-        }
+    }
 
-        emf.close();
+    public void JPALecture4(EntityManager em){
+        Member member1= new Member();
+        member1.setId(1L);
+        member1.setName("A");
+        member1.setRoleType(RoleType.USER);
+
+        Member member2= new Member();
+        member2.setId(2L);
+        member2.setName("B");
+        member2.setRoleType(RoleType.ADMIN);
+
+        em.persist(member1);
+        em.persist(member2);
     }
 }
