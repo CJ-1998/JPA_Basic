@@ -7,6 +7,7 @@ import javax.persistence.Persistence;
 import java.util.List;
 
 public class JpaMain {
+
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
 
@@ -16,6 +17,7 @@ public class JpaMain {
         tx.begin();
 
         try {
+            JPALecture4_2(em);
             tx.commit();
         }
         catch(Exception e){
@@ -28,7 +30,7 @@ public class JpaMain {
         emf.close();
     }
 
-    public void JPALecture1To3(EntityManager em, EntityTransaction tx){
+    public static void JPALecture1To3(EntityManager em, EntityTransaction tx){
 //          비영속 상태
             Member member = new Member();
             member.setId(200L);
@@ -98,7 +100,8 @@ public class JpaMain {
 //            tx.commit();
     }
 
-    public void JPALecture4(EntityManager em){
+    public static void JPALecture4_1(EntityManager em){
+//      enum 타입 매핑 시 ORDINAL말고 STRING 써야 하는 이유 설명
         Member member1= new Member();
         member1.setId(1L);
         member1.setName("A");
@@ -111,5 +114,29 @@ public class JpaMain {
 
         em.persist(member1);
         em.persist(member2);
+    }
+
+    public static void JPALecture4_2(EntityManager em){
+//      기본키 매핑 전략 확인
+        Member member1=new Member();
+        member1.setName("A");
+
+        Member member2=new Member();
+        member2.setName("B");
+
+        Member member3=new Member();
+        member3.setName("C");
+
+        System.out.println("=================");
+        em.persist(member1);
+        System.out.println("member1.getId() = " + member1.getId());
+        em.persist(member2);
+        em.persist(member3);
+
+        System.out.println("member1.getId() = " + member1.getId());
+        System.out.println("member2.getId() = " + member2.getId());
+        System.out.println("member3.getId() = " + member3.getId());
+
+        System.out.println("=================");
     }
 }

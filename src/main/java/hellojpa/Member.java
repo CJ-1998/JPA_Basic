@@ -4,8 +4,13 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+//@SequenceGenerator(name = "MEMBER_SEQ_GENERATOR", sequenceName = "MEMBER_SEQ", initialValue = 1, allocationSize = 1) //sequence 전략 사용시
+//@TableGenerator(name = "MEMBER_SEQ_GENERATOR", table = "MY_SEQUENCES", pkColumnValue = "MEMBER_SEQ", allocationSize = 1) //table 전략 사용시
 public class Member {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  //identity 전략 사용 시
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQ_GENERATOR")  //sequence 전략 사용 시
+//    @GeneratedValue(strategy = GenerationType.TABLE, generator = "MEMBER_SEQ_GENERATOR")  //table 전략 사용시
     private Long id;
 
     @Column(name = "name")
