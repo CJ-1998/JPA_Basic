@@ -7,28 +7,37 @@ import java.util.Date;
 //@SequenceGenerator(name = "MEMBER_SEQ_GENERATOR", sequenceName = "MEMBER_SEQ", initialValue = 1, allocationSize = 1) //sequence 전략 사용시
 //@TableGenerator(name = "MEMBER_SEQ_GENERATOR", table = "MY_SEQUENCES", pkColumnValue = "MEMBER_SEQ", allocationSize = 1) //table 전략 사용시
 public class Member {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  //identity 전략 사용 시
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQ_GENERATOR")  //sequence 전략 사용 시
-//    @GeneratedValue(strategy = GenerationType.TABLE, generator = "MEMBER_SEQ_GENERATOR")  //table 전략 사용시
+    @Id @GeneratedValue
+    @Column(name = "MEMBER_ID")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "USERNAME")
     private String username;
 
-    private Integer age;
+    @Column(name = "TEAM_ID")
+    private Long teamId;
 
-    @Enumerated(EnumType.STRING)
-    private RoleType roleType;
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)  //identity 전략 사용 시
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQ_GENERATOR")  //sequence 전략 사용 시
+//    @GeneratedValue(strategy = GenerationType.TABLE, generator = "MEMBER_SEQ_GENERATOR")  //table 전략 사용시
+//    private Long id;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
+//    @Column(name = "name")
+//    private String username;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastModifiedDate;
-
-    @Lob
-    private String description;
+//    private Integer age;
+//
+//    @Enumerated(EnumType.STRING)
+//    private RoleType roleType;
+//
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date createdDate;
+//
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date lastModifiedDate;
+//
+//    @Lob
+//    private String description;
 
     public Member(){
 
@@ -45,27 +54,43 @@ public class Member {
 
     public void setId(Long id) {this.id = id;}
 
-    public String getName() {return username;}
+    public String getName() {
+        return username;
+    }
 
-    public void setName(String username) {this.username = username;}
+    public void setName(String username) {
+        this.username = username;
+    }
 
-    public Integer getAge() {return age;}
+    public Long getTeamId() {
+        return teamId;
+    }
 
-    public void setAge(Integer age) {this.age = age;}
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
+    }
 
-    public RoleType getRoleType() {return roleType;}
-
-    public void setRoleType(RoleType roleType) {this.roleType = roleType;}
-
-    public Date getCreatedDate() {return createdDate;}
-
-    public void setCreatedDate(Date createdDate) {this.createdDate = createdDate;}
-
-    public Date getLastModifiedDate() {return lastModifiedDate;}
-
-    public void setLastModifiedDate(Date lastModifiedDate) {this.lastModifiedDate = lastModifiedDate;}
-
-    public String getDescription() {return description;}
-
-    public void setDescription(String description) {this.description = description;}
+//    public String getName() {return username;}
+//
+//    public void setName(String username) {this.username = username;}
+//
+//    public Integer getAge() {return age;}
+//
+//    public void setAge(Integer age) {this.age = age;}
+//
+//    public RoleType getRoleType() {return roleType;}
+//
+//    public void setRoleType(RoleType roleType) {this.roleType = roleType;}
+//
+//    public Date getCreatedDate() {return createdDate;}
+//
+//    public void setCreatedDate(Date createdDate) {this.createdDate = createdDate;}
+//
+//    public Date getLastModifiedDate() {return lastModifiedDate;}
+//
+//    public void setLastModifiedDate(Date lastModifiedDate) {this.lastModifiedDate = lastModifiedDate;}
+//
+//    public String getDescription() {return description;}
+//
+//    public void setDescription(String description) {this.description = description;}
 }

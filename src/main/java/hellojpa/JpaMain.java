@@ -17,7 +17,7 @@ public class JpaMain {
         tx.begin();
 
         try {
-            JPALecture4_2(em);
+            JPALecture5_1(em);
             tx.commit();
         }
         catch(Exception e){
@@ -102,18 +102,18 @@ public class JpaMain {
 
     public static void JPALecture4_1(EntityManager em){
 //      enum 타입 매핑 시 ORDINAL말고 STRING 써야 하는 이유 설명
-        Member member1= new Member();
-        member1.setId(1L);
-        member1.setName("A");
-        member1.setRoleType(RoleType.USER);
-
-        Member member2= new Member();
-        member2.setId(2L);
-        member2.setName("B");
-        member2.setRoleType(RoleType.ADMIN);
-
-        em.persist(member1);
-        em.persist(member2);
+//        Member member1= new Member();
+//        member1.setId(1L);
+//        member1.setName("A");
+//        member1.setRoleType(RoleType.USER);
+//
+//        Member member2= new Member();
+//        member2.setId(2L);
+//        member2.setName("B");
+//        member2.setRoleType(RoleType.ADMIN);
+//
+//        em.persist(member1);
+//        em.persist(member2);
     }
 
     public static void JPALecture4_2(EntityManager em){
@@ -138,5 +138,26 @@ public class JpaMain {
         System.out.println("member3.getId() = " + member3.getId());
 
         System.out.println("=================");
+    }
+
+    public static void JPALecture5_1(EntityManager em){
+//      DB 테이블대로 엔티티 설계 시 문제 확인
+        Team team=new Team();
+        team.setName("TeamA");
+
+        em.persist(team);
+
+        Member member=new Member();
+        member.setName("member1");
+        member.setTeamId(team.getId());
+
+        em.persist(member);
+
+//      조회 시 문제
+        Member findMember = em.find(Member.class, member.getId());
+
+        Long findTeamId = findMember.getTeamId();
+        Team findTeam = em.find(Team.class, findTeamId);
+
     }
 }
