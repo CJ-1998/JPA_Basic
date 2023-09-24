@@ -17,7 +17,7 @@ public class JpaMain {
         tx.begin();
 
         try {
-            JPALecture5_1(em);
+            JPALecture5_2(em);
             tx.commit();
         }
         catch(Exception e){
@@ -142,6 +142,27 @@ public class JpaMain {
 
     public static void JPALecture5_1(EntityManager em){
 //      DB 테이블대로 엔티티 설계 시 문제 확인
+//        Team team=new Team();
+//        team.setName("TeamA");
+//
+//        em.persist(team);
+//
+//        Member member=new Member();
+//        member.setName("member1");
+//        member.setTeamId(team.getId());
+//
+//        em.persist(member);
+//
+////      조회 시 문제
+//        Member findMember = em.find(Member.class, member.getId());
+//
+//        Long findTeamId = findMember.getTeamId();
+//        Team findTeam = em.find(Team.class, findTeamId);
+
+    }
+
+    public static void JPALecture5_2(EntityManager em) {
+//      객체지향적으로 엔티티 설계 변경
         Team team=new Team();
         team.setName("TeamA");
 
@@ -149,15 +170,13 @@ public class JpaMain {
 
         Member member=new Member();
         member.setName("member1");
-        member.setTeamId(team.getId());
+        member.setTeam(team);
 
         em.persist(member);
 
-//      조회 시 문제
+//      조회
         Member findMember = em.find(Member.class, member.getId());
-
-        Long findTeamId = findMember.getTeamId();
-        Team findTeam = em.find(Team.class, findTeamId);
-
+        Team findTeam = findMember.getTeam();
+        System.out.println("findTeam.getName() = " + findTeam.getName());
     }
 }
