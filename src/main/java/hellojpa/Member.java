@@ -72,11 +72,23 @@ public class Member {
         return team;
     }
 
-    public void setTeam(Team team) {
+    public void setTeam(Team team) {this.team = team;}
+
+    public void changeTeam(Team team) {
         this.team = team;
+        team.getMembers().add(this);
     }
 
-//    public Long getTeamId() {
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", team=" + team +
+                '}';
+    }
+
+    //    public Long getTeamId() {
 //        return teamId;
 //    }
 //

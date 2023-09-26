@@ -181,16 +181,19 @@ public class JpaMain {
     }
 
     public static void JPALecture5_3(EntityManager em){
+//      양방향 연관관계 확인
         Team team=new Team();
         team.setName("TeamA");
-
         em.persist(team);
 
         Member member=new Member();
         member.setName("member1");
-        member.setTeam(team);
-
+//        member.setTeam(team);
+//        member.changeTeam(team);
         em.persist(member);
+
+//        team.getMembers().add(member);
+        team.addMember(member);
 
         em.flush();
         em.clear();
@@ -201,5 +204,13 @@ public class JpaMain {
         for (Member m : members) {
             System.out.println("m.getName() = " + m.getName());
         }
+
+        Team findTeam = em.find(Team.class, team.getId());
+        List<Member> members1 = findTeam.getMembers();
+
+        for (Member member1 : members1) {
+            System.out.println("member1.getName() = " + member1.getName());
+        }
+
     }
 }
