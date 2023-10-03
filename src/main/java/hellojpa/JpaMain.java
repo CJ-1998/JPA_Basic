@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class JpaMain {
@@ -17,7 +18,7 @@ public class JpaMain {
         tx.begin();
 
         try {
-            JPALecture7_1(em);
+            JPALecture7_2(em);
             tx.commit();
         }
         catch(Exception e){
@@ -230,6 +231,16 @@ public class JpaMain {
 //        em.find(Movie.class, movie.getId());
 
         em.find(Item.class, movie.getId());
+
+    }
+
+    public static void JPALecture7_2(EntityManager em){
+        Member member=new Member();
+        member.setName("son");
+        member.setCreateBy("kim");
+        member.setCreatedDate(LocalDateTime.now());
+
+        em.persist(member);
 
     }
 }
