@@ -17,7 +17,7 @@ public class JpaMain {
         tx.begin();
 
         try {
-            JPALecture5_2(em);
+            JPALecture7_1(em);
             tx.commit();
         }
         catch(Exception e){
@@ -211,6 +211,25 @@ public class JpaMain {
         for (Member member1 : members1) {
             System.out.println("member1.getName() = " + member1.getName());
         }
+
+    }
+
+    public static void JPALecture7_1(EntityManager em){
+//      상속관계 매핑 예제
+        Movie movie=new Movie();
+        movie.setName("aaaa");
+        movie.setActor("bbbb");
+        movie.setDirector("cccc");
+        movie.setPrice(10000);
+
+        em.persist(movie);
+
+        em.flush();
+        em.clear();
+
+//        em.find(Movie.class, movie.getId());
+
+        em.find(Item.class, movie.getId());
 
     }
 }
