@@ -1,5 +1,7 @@
 package hellojpa;
 
+import org.hibernate.Hibernate;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -18,7 +20,7 @@ public class JpaMain {
         tx.begin();
 
         try {
-            JPALecture7_2(em);
+            JPALecture8_4(em,emf);
             tx.commit();
         }
         catch(Exception e){
@@ -243,4 +245,102 @@ public class JpaMain {
         em.persist(member);
 
     }
+
+    public static void JPALecture8_1(EntityManager em){
+//      프록시 알아보기 위한 예제
+
+        Member member=new Member();
+        member.setName("kom");
+
+        em.persist(member);
+
+        em.flush();
+        em.clear();
+
+        em.find(Member.class, member.getId());
+        System.out.println("member.getId() = " + member.getId());
+        System.out.println("member.getName() = " + member.getName());
+
+        em.flush();
+        em.clear();
+
+        Member referenceMember = em.getReference(Member.class, member.getId());
+        System.out.println("referenceMember.getClass() = " + referenceMember.getClass());
+        System.out.println("referenceMember.getId() = " + referenceMember.getId());
+        System.out.println("referenceMember.getName() = " + referenceMember.getName());
+
+        em.flush();
+        em.clear();
+
+//      Member만 출력하거나 Member, Team 함께 출력하는 경우 보기 위한 예제
+        Member findMember = em.find(Member.class, 1L);
+        printMemberAndTeam(findMember);
+        printMember(findMember);
+    }
+
+    public static void JPALecture8_2(EntityManager em){
+//      프록시 때문에 ==비교하면 안되는 이유 확인
+        Member member1=new Member();
+        member1.setName("kom");
+        em.persist(member1);
+
+        Member member2=new Member();
+        member2.setName("kom");
+        em.persist(member2);
+
+        em.flush();
+        em.clear();
+
+        Member m1 = em.find(Member.class, member1.getId());
+        Member m2 = em.getReference(Member.class, member2.getId());
+
+        System.out.println("m1==m2: " + (m1==m2));
+    }
+
+    public static void JPALecture8_3(EntityManager em){
+//      준영속 상태에서 프록시 초기화 안되는 것 확인
+        Member member1=new Member();
+        member1.setName("kom");
+        em.persist(member1);
+
+        em.flush();
+        em.clear();
+
+        Member refMember = em.getReference(Member.class, member1.getId());
+        System.out.println("refMember.getClass() = " + refMember.getClass());
+
+        em.detach(refMember);
+
+        refMember.getName();
+    }
+
+    public static void JPALecture8_4(EntityManager em, EntityManagerFactory emf){
+//      프록시 관련 유틸리티 함수
+        Member member1=new Member();
+        member1.setName("kom");
+        em.persist(member1);
+
+        em.flush();
+        em.clear();
+
+        Member refMember = em.getReference(Member.class, member1.getId());
+        System.out.println("refMember.getClass() = " + refMember.getClass());
+        System.out.println("isLoaded= "+emf.getPersistenceUnitUtil().isLoaded(refMember));
+        Hibernate.initialize(refMember);    //강제 초기화
+        System.out.println("isLoaded= "+emf.getPersistenceUnitUtil().isLoaded(refMember));
+    }
+
+
+    private static void printMember(Member member) {
+        System.out.println("member.getName() = " + member.getName());
+    }
+
+    private static void printMemberAndTeam(Member member) {
+        String name = member.getName();
+        System.out.println("name = " + name);
+
+        Team team = member.getTeam();
+        System.out.println("team.getName() = " + team.getName());
+    }
 }
+
