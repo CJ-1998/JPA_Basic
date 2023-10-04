@@ -20,7 +20,7 @@ public class JpaMain {
         tx.begin();
 
         try {
-            JPALecture8_4(em,emf);
+            JPALecture8_5(em);
             tx.commit();
         }
         catch(Exception e){
@@ -328,6 +328,29 @@ public class JpaMain {
         System.out.println("isLoaded= "+emf.getPersistenceUnitUtil().isLoaded(refMember));
         Hibernate.initialize(refMember);    //강제 초기화
         System.out.println("isLoaded= "+emf.getPersistenceUnitUtil().isLoaded(refMember));
+    }
+
+    public static void JPALecture8_5(EntityManager em){
+//      지연 로딩, 즉시 로딩 확인
+        Team team=new Team();
+        team.setName("teamA");
+        em.persist(team);
+
+        Member member1=new Member();
+        member1.setName("kim");
+        member1.setTeam(team);
+
+        em.persist(member1);
+
+        em.flush();
+        em.clear();
+
+        Member m = em.find(Member.class, member1.getId());
+        System.out.println("m.getTeam().getClass() = " + m.getTeam().getClass());
+
+        System.out.println("===================");
+        m.getTeam().getName();
+        System.out.println("===================");
     }
 
 
