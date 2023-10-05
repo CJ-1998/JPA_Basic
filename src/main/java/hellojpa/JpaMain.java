@@ -353,6 +353,20 @@ public class JpaMain {
         System.out.println("===================");
     }
 
+    public static void JPALecture8_6(EntityManager em){
+//      영속성 전이 예제
+
+        Child child1 =new Child();
+        Child child2 =new Child();
+
+        Parent parent=new Parent();
+        parent.addChild(child1);
+        parent.addChild(child2);
+
+        em.persist(parent);
+        em.persist(child1);
+        em.persist(child2);
+    }
 
     private static void printMember(Member member) {
         System.out.println("member.getName() = " + member.getName());
@@ -366,4 +380,5 @@ public class JpaMain {
         System.out.println("team.getName() = " + team.getName());
     }
 }
+
 
