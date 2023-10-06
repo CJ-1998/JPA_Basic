@@ -16,8 +16,8 @@ public class Member extends BaseEntity{
     @Column(name = "USERNAME")
     private String username;
 
-//    @ManyToOne(fetch=FetchType.LAZY)
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.LAZY)
+//    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
@@ -29,10 +29,23 @@ public class Member extends BaseEntity{
     @JoinTable(name = "MEMBER_PRODUCT")
     private List<Product> products = new ArrayList<>();
 
+    @Embedded
+    private Period workPeriod;
+    @Embedded
+    private Address homeAddress;
+
+    @Embedded
+    @AttributeOverrides(
+            {
+                    @AttributeOverride(name = "city", column = @Column(name = "WORK_CITY")),
+                    @AttributeOverride(name = "street", column=@Column(name = "WORK_STREET")),
+                    @AttributeOverride(name = "zipcode", column=@Column(name = "WORK_ZIPCODE"))
+            }
+    )
+    private Address workAddress;
+
 //    @Column(name = "TEAM_ID")
 //    private Long teamId;
-
-
 
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)  //identity 전략 사용 시
 //    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQ_GENERATOR")  //sequence 전략 사용 시
@@ -84,6 +97,22 @@ public class Member extends BaseEntity{
     }
 
     public void setTeam(Team team) {this.team = team;}
+
+    public Period getWorkPeriod() {
+        return workPeriod;
+    }
+
+    public void setWorkPeriod(Period workPeriod) {
+        this.workPeriod = workPeriod;
+    }
+
+    public Address getHomeAddress() {
+        return homeAddress;
+    }
+
+    public void setHomeAddress(Address homeAddress) {
+        this.homeAddress = homeAddress;
+    }
 
     public void changeTeam(Team team) {
         this.team = team;
