@@ -8,6 +8,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
 
@@ -20,7 +21,7 @@ public class JpaMain {
         tx.begin();
 
         try {
-            JPALecture8_5(em);
+            JPALecture9_1(em);
             tx.commit();
         }
         catch(Exception e){
@@ -375,6 +376,57 @@ public class JpaMain {
         findParent.getChildList().remove(0);
     }
 
+    public static void JPALecture9_1(EntityManager em){
+//      값 타입 컬렉션 저장 예제
+        
+        Member member=new Member();
+        member.setName("kim");
+        member.setHomeAddress(new Address("homecity","street","zipcode"));
+
+        member.getFavoriteFoods().add("치킨");
+        member.getFavoriteFoods().add("피자");
+        member.getFavoriteFoods().add("족발");
+        
+        member.getAddressHistory().add(new Address("old1","street","zipcode"));
+        member.getAddressHistory().add(new Address("old2","street","zipcode"));
+        
+        em.persist(member);
+
+//      값 타입 컬렉션 조회 예제
+
+        em.flush();
+        em.clear();
+
+        System.out.println("===========START================");
+        Member findMember = em.find(Member.class, member.getId());
+
+//      컬렉션 값 타입은 지연로딩이라 사용할 때 쿼리가 나간다.
+        List<Address> addressHistory = findMember.getAddressHistory();
+        for (Address address : addressHistory) {
+            System.out.println("address.getCity() = " + address.getCity());
+        }
+
+        Set<String> favoriteFoods = findMember.getFavoriteFoods();
+        for (String favoriteFood : favoriteFoods) {
+            System.out.println("favoriteFood = " + favoriteFood);
+        }
+
+//      값 타입 수정 예제
+//        findMember.getHomeAddress().setCity("newCity");
+        Address homeAddress = findMember.getHomeAddress();
+        findMember.setHomeAddress(new Address("newCity", homeAddress.getStreet(), homeAddress.getZipcode()));
+
+//      값 타입 컬렉션 수정 예제
+//      치킨->한식
+        findMember.getFavoriteFoods().remove("치킨");
+        findMember.getFavoriteFoods().add("한식");
+
+//      old1->new1
+        findMember.getAddressHistory().remove(new Address("old1","street","zipcode"));
+        findMember.getAddressHistory().add(new Address("new1","street","zipcode"));
+
+    }
+
     private static void printMember(Member member) {
         System.out.println("member.getName() = " + member.getName());
     }
@@ -387,5 +439,3 @@ public class JpaMain {
         System.out.println("team.getName() = " + team.getName());
     }
 }
-
-
