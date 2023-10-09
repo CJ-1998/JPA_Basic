@@ -6,6 +6,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +24,7 @@ public class JpaMain {
         tx.begin();
 
         try {
-            JPALecture9_1(em);
+            JPALecture10_1(em);
             tx.commit();
         }
         catch(Exception e){
@@ -424,6 +427,23 @@ public class JpaMain {
 //      old1->new1
         findMember.getAddressHistory().remove(new Address("old1","street","zipcode"));
         findMember.getAddressHistory().add(new Address("new1","street","zipcode"));
+
+    }
+
+    public static void JPALecture10_1(EntityManager em){
+        //jpql
+        List<Member> result = em.createQuery("select m From Member m where m.name like ‘%hello%'", Member.class).getResultList();
+
+        //Criteria 사용 준비
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Member> query = cb.createQuery(Member.class);
+
+        //루트 클래스 (조회를 시작할 클래스)
+        Root<Member> m = query.from(Member.class);
+
+        //쿼리 생성
+        CriteriaQuery<Member> cq = query.select(m).where(cb.equal(m.get("username"), "kim"));
+        List<Member> resultList = em.createQuery(cq).getResultList();
 
     }
 
