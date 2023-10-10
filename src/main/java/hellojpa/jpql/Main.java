@@ -14,7 +14,7 @@ public class Main {
         tx.begin();
 
         try {
-            JPALecture10_2(em);
+            JPALecture10_4(em);
 
             tx.commit();
         }
@@ -74,5 +74,30 @@ public class Main {
         MemberDTO1 memberDTO1=resultList.get(0);
         System.out.println("memberDTO1.getUsername() = " + memberDTO1.getUsername());
         System.out.println("memberDTO1.getAge() = " + memberDTO1.getAge());
+    }
+
+    public static void JPALecture10_4(EntityManager em){
+        //페이징
+
+        for(int i=0;i<100;i++) {
+            Member1 member1 = new Member1();
+            member1.setUsername("member"+i);
+            member1.setAge(i);
+            em.persist(member1);
+        }
+
+        em.flush();
+        em.clear();
+
+        List<Member1> resultList = em.createQuery("select m from Member1 m order by m.age desc", Member1.class)
+                .setFirstResult(1)
+                .setMaxResults(10)
+                .getResultList();
+
+        System.out.println("resultList.size() = " + resultList.size());
+        for (Member1 member11 : resultList) {
+            System.out.println("member11 = " + member11);
+        }
+
     }
 }
