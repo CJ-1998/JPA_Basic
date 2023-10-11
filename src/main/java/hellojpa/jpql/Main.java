@@ -14,7 +14,7 @@ public class Main {
         tx.begin();
 
         try {
-            JPALecture10_4(em);
+            JPALecture10_5(em);
 
             tx.commit();
         }
@@ -98,6 +98,29 @@ public class Main {
         for (Member1 member11 : resultList) {
             System.out.println("member11 = " + member11);
         }
+    }
+
+    public static void JPALecture10_5(EntityManager em){
+        //조인
+        Team1 team1=new Team1();
+        team1.setName("teamA");
+        em.persist(team1);
+
+        Member1 member1 = new Member1();
+        member1.setUsername("member1");
+        member1.setAge(10);
+        member1.changeTeam(team1);
+        em.persist(member1);
+
+        em.flush();
+        em.clear();
+
+        String query="select m from Member1 m inner join m.team1 t";
+        String query1="select m from Member1 m left outer join m.team1 t";
+        String query2="select m from Member1 m, Team1 t where m.username=t.name";
+
+        List<Member1> resultList = em.createQuery(query, Member1.class).getResultList();
 
     }
+
 }

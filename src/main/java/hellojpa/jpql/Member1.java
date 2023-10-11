@@ -10,7 +10,7 @@ public class Member1 {
     private String username;
     private int age;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="TEAM_ID")
     private Team1 team1;
 
@@ -36,6 +36,19 @@ public class Member1 {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public Team1 getTeam1() {
+        return team1;
+    }
+
+    public void setTeam1(Team1 team1) {
+        this.team1 = team1;
+    }
+
+    public void changeTeam(Team1 team1){
+        this.team1=team1;
+        team1.getMembers1().add(this);
     }
 
     @Override
