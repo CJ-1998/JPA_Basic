@@ -14,7 +14,7 @@ public class Main {
         tx.begin();
 
         try {
-            JPALecture10_6(em);
+            JPALecture10_7(em);
 
             tx.commit();
         }
@@ -161,4 +161,52 @@ public class Main {
 
     }
 
+    public static void JPALecture10_7(EntityManager em){
+        //case식
+        Team1 team1=new Team1();
+        team1.setName("teamA");
+        em.persist(team1);
+
+        Member1 member1 = new Member1();
+        member1.setUsername("관리자");
+        member1.setAge(10);
+        member1.changeTeam(team1);
+        member1.setType1(MemberType1.ADMIN);
+        em.persist(member1);
+
+        em.flush();
+        em.clear();
+
+        //기본 case식
+        String query="select "+
+                        "case when m.age <= 10 then '학생요금' "+
+                            "when m.age >= 60 then '경로요금' "+
+                            "else '일반요금' "+
+                        "end "+
+                    "from Member1 m ";
+
+        List<String> resultList = em.createQuery(query, String.class).getResultList();
+
+        for (String s : resultList) {
+            System.out.println("s = " + s);
+        }
+
+        //coalesce
+        String query1="select coalesce(m.username,'이름 없는 회원') from Member1 m";
+
+        List<String> resultList1 = em.createQuery(query1, String.class).getResultList();
+
+        for (String s : resultList1) {
+            System.out.println("s = " + s);
+        }
+
+        //nullif
+        String query2="select nullif(m.username,'관리자') from Member1 m";
+
+        List<String> resultList2 = em.createQuery(query2, String.class).getResultList();
+
+        for (String s : resultList2) {
+            System.out.println("s = " + s);
+        }
+    }
 }
