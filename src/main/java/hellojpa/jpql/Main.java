@@ -14,7 +14,7 @@ public class Main {
         tx.begin();
 
         try {
-            JPALecture10_5(em);
+            JPALecture10_6(em);
 
             tx.commit();
         }
@@ -120,6 +120,44 @@ public class Main {
         String query2="select m from Member1 m, Team1 t where m.username=t.name";
 
         List<Member1> resultList = em.createQuery(query, Member1.class).getResultList();
+
+    }
+
+    public static void JPALecture10_6(EntityManager em){
+        //jpql 타입 표현
+        Team1 team1=new Team1();
+        team1.setName("teamA");
+        em.persist(team1);
+
+        Member1 member1 = new Member1();
+        member1.setUsername("member1");
+        member1.setAge(10);
+        member1.changeTeam(team1);
+        member1.setType1(MemberType1.ADMIN);
+        em.persist(member1);
+
+        em.flush();
+        em.clear();
+
+        String query="select m.username, 'HELLO', TRUE from Member1 m";
+        List<Object[]> result = em.createQuery(query).getResultList();
+
+        for (Object[] objects : result) {
+            System.out.println("objects[0] = " + objects[0]);
+            System.out.println("objects[1] = " + objects[1]);
+            System.out.println("objects[2] = " + objects[2]);
+        }
+
+        System.out.println("======================");
+
+        String query1="select m.username, 'HELLO', TRUE from Member1 m where m.type1= hellojpa.jpql.MemberType1.ADMIN";
+        List<Object[]> result1 = em.createQuery(query1).getResultList();
+
+        for (Object[] objects : result1) {
+            System.out.println("objects[0] = " + objects[0]);
+            System.out.println("objects[1] = " + objects[1]);
+            System.out.println("objects[2] = " + objects[2]);
+        }
 
     }
 

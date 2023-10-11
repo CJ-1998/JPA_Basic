@@ -14,6 +14,9 @@ public class Member1 {
     @JoinColumn(name="TEAM_ID")
     private Team1 team1;
 
+    @Enumerated(EnumType.STRING)
+    private MemberType1 type1;
+
     public Long getId() {
         return id;
     }
@@ -44,6 +47,14 @@ public class Member1 {
 
     public void setTeam1(Team1 team1) {
         this.team1 = team1;
+    }
+
+    public MemberType1 getType1() {
+        return type1;
+    }
+
+    public void setType1(MemberType1 type1) {
+        this.type1 = type1;
     }
 
     public void changeTeam(Team1 team1){
