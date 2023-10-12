@@ -14,7 +14,7 @@ public class Main {
         tx.begin();
 
         try {
-            JPALecture11_2(em);
+            JPALecture11_3(em);
 
             tx.commit();
         }
@@ -330,5 +330,41 @@ public class Main {
             System.out.println("member11 = " + member11);
         }
 
+    }
+
+    public static void JPALecture11_3(EntityManager em) {
+        //벌크 연산
+        Team1 teamA = new Team1();
+        teamA.setName("teamA");
+        em.persist(teamA);
+
+        Team1 teamB = new Team1();
+        teamB.setName("teamB");
+        em.persist(teamB);
+
+        Member1 member1 = new Member1();
+        member1.setUsername("회원1");
+        member1.setAge(10);
+        member1.setTeam1(teamA);
+        em.persist(member1);
+
+        Member1 member2 = new Member1();
+        member2.setUsername("회원2");
+        member2.setAge(10);
+        member2.setTeam1(teamA);
+        em.persist(member2);
+
+        Member1 member3 = new Member1();
+        member3.setUsername("회원3");
+        member3.setAge(10);
+        member3.setTeam1(teamB);
+        em.persist(member3);
+
+        em.flush();
+        em.clear();
+
+        int resultCount = em.createQuery("update Member1 m set m.age=20").executeUpdate();
+
+        System.out.println("resultCount = " + resultCount);
     }
 }
