@@ -14,7 +14,7 @@ public class Main {
         tx.begin();
 
         try {
-            JPALecture10_7(em);
+            JPALecture11_1(em);
 
             tx.commit();
         }
@@ -207,6 +207,87 @@ public class Main {
 
         for (String s : resultList2) {
             System.out.println("s = " + s);
+        }
+    }
+
+    public static void JPALecture11_1(EntityManager em) {
+        //fetch join
+        Team1 teamA = new Team1();
+        teamA.setName("teamA");
+        em.persist(teamA);
+
+        Team1 teamB = new Team1();
+        teamB.setName("teamB");
+        em.persist(teamB);
+
+        Member1 member1 = new Member1();
+        member1.setUsername("회원1");
+        member1.setAge(10);
+        member1.setTeam1(teamA);
+        em.persist(member1);
+
+        Member1 member2 = new Member1();
+        member2.setUsername("회원2");
+        member2.setAge(10);
+        member2.setTeam1(teamA);
+        em.persist(member2);
+
+        Member1 member3 = new Member1();
+        member3.setUsername("회원3");
+        member3.setAge(10);
+        member3.setTeam1(teamB);
+        em.persist(member3);
+
+        em.flush();
+        em.clear();
+
+        String query="select m from Member1 m join fetch m.team1";
+
+        List<Member1> resultList = em.createQuery(query, Member1.class).getResultList();
+
+        for (Member1 member11 : resultList) {
+            System.out.println("member11 = " + member11.getUsername()+", "+member11.getTeam1().getName());
+        }
+
+        String query1="select t from Team1 t join fetch t.members1";
+
+        List<Team1> resultList1 = em.createQuery(query1, Team1.class).getResultList();
+
+        for (Team1 team1 : resultList1) {
+            System.out.println("team1. = " + team1.getName()+", "+team1.getMembers1().size());
+
+            for(Member1 member11 : team1.getMembers1()){
+                System.out.println("member11 = " + member11);
+            }
+        }
+
+        //중복 제거 위해 distinct 사용
+        String query2="select distinct t from Team1 t join fetch t.members1";
+
+        List<Team1> resultList2 = em.createQuery(query2, Team1.class).getResultList();
+
+        for (Team1 team1 : resultList2) {
+            System.out.println("team1. = " + team1.getName()+", "+team1.getMembers1().size());
+
+            for(Member1 member11 : team1.getMembers1()){
+                System.out.println("member11 = " + member11);
+            }
+        }
+
+        em.flush();
+        em.clear();
+
+        //일반 join
+        String query3="select t from Team1 t join t.members1 m";
+
+        List<Team1> resultList3 = em.createQuery(query3, Team1.class).getResultList();
+
+        for (Team1 team1 : resultList3) {
+            System.out.println("team1. = " + team1.getName()+", "+team1.getMembers1().size());
+
+            for(Member1 member11 : team1.getMembers1()){
+                System.out.println("member11 = " + member11);
+            }
         }
     }
 }
